@@ -2,7 +2,7 @@ import { InputProductUpdateDto } from "./update.product.dto";
 import UpdateProductUseCase from "./update.product.usecase";
 import ProductFactory from "../../../domain/product/factory/product.factory";
 
-const product = ProductFactory.create('a', "Product 1", 10);
+let product = ProductFactory.create('a', "Product 1", 10);
 
 const input: InputProductUpdateDto = {
     id: product.id,
@@ -20,6 +20,10 @@ const MockRepository = () => {
 };
 
 describe("Unit test update product use case", () => {
+    beforeEach(async () => {
+      product = ProductFactory.create('a', "Product 1", 10);
+    });
+
     it("should update a product", async () => {
       const productRepository = MockRepository();
       const productUpdateUseCase = new UpdateProductUseCase(productRepository);
@@ -43,12 +47,12 @@ describe("Unit test update product use case", () => {
         "Name is required"
       );
     });
-  
+
     it("should thrown an error when price not is greater than zero", async () => {
       const productRepository = MockRepository();
       const productUpdateUseCase = new UpdateProductUseCase(productRepository);
     
-      input.name = 'Product 1 updated';  
+      input.name = "Product 1";
       input.price = -1;
   
       await expect(productUpdateUseCase.execute(input)).rejects.toThrow(

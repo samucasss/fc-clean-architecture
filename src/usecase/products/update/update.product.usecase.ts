@@ -10,6 +10,8 @@ export default class CreateProductUseCase {
 
     async execute(input: InputProductUpdateDto): Promise<OutputProductUpdateDto> {
         const product = await this.productRepository.find(input.id);
+
+        console.log('input.name: ' + input.name);
         product.changeName(input.name);
         product.changePrice(input.price);
 
